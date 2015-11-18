@@ -1,0 +1,13 @@
+source 'https://github.com/CocoaPods/Specs.git'
+use_frameworks!
+
+target 'PSOLib_Example', :exclusive => true do
+  pod "PSOLib", :path => "../"
+end
+
+target 'PSOLib_Tests', :exclusive => true do
+  pod "PSOLib", :path => "../"
+
+  pod 'Specta', '~> 1.0.0'
+  pod 'Expecta', '~> 1.0.0'
+end
