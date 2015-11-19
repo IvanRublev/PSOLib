@@ -212,4 +212,4 @@ Ivan Rublev, ivan@ivanrublev.me
 License
 -------
 
-PSOLibrary is available under the MIT license. See the LICENSE file for more info.
+PSOLib is available under the MIT license. See the LICENSE file for more info.
