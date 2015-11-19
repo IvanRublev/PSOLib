@@ -148,7 +148,7 @@ forPositionsBunch:(double **)positions
 
 1. Making new calculator object that conforms to `PSOfitnessCalculating` protocol.
 2. Defining problem and set the fitness function calculator object.
-3. Evaluate fitness function for positions passed in for each particle.
+3. Evaluate fitness function for all positions passed in.
 
 ####Swift
 
@@ -203,8 +203,8 @@ Release notes
 1.0.0 - Initial release.
 
 
-Author
-------
+Library author
+--------------
 
 Ivan Rublev, ivan@ivanrublev.me
 
