@@ -22,7 +22,7 @@ __block double fitnessBest;
 
 describe(@"Test functions", ^{
     __block double optimum;
-    __block double err;
+    __block double fitnessError;
     __block NSUInteger expectedIterations;
 
     void (^prepareOptimizer)(PSOSearchSpace* bounds, double optimum, PSOFitnessBlock fitness) = ^(PSOSearchSpace* bounds, double optimum, PSOFitnessBlock fitness) {
@@ -37,16 +37,19 @@ describe(@"Test functions", ^{
              iterations = optimizer.iteration;
              fitnessBest = optimizer.bestFitness;
          }];
-        optimizer.fitnessError = err;
+        optimizer.fitnessError = fitnessError;
         PSOAleaSrand(1294404794);
     };
 
     beforeEach(^{
         optimum = 0.;
-        err = 1e-4;
-        expectedIterations = 75e3;
+        fitnessError = 1e-4;
+        expectedIterations = 2e3;
     });
     it(@"Sphere", ^{
+        
+        fitnessError = 0.01;
+        
         prepareOptimizer([PSOSearchSpace searchSpaceWithDimensionsMin:-100 max:100 count:30], optimum, ^double(double* x, int dimensions) { // sum(x.^2);
             double squares[dimensions];
             vDSP_vsqD(x, 1, squares, 1, dimensions);
@@ -55,11 +58,16 @@ describe(@"Test functions", ^{
             return sum;
         });
         [optimizer.operation start];
-        expect(fitnessBest).to.beCloseToWithin(optimum, err);
+        
+        expectedIterations = 250;
+        expect(fitnessBest).to.beCloseToWithin(optimum, fitnessError);
         expect(iterations).to.beLessThan(expectedIterations);
     });
     it(@"Rastrigin", ^{
-        prepareOptimizer([PSOSearchSpace searchSpaceWithDimensionsMin:-5.12 max:5.12 count:3], optimum, ^double(double* x, int dimensions) { // 10*D + sum(x.^2 - 10*cos(2.*pi.*x));
+        
+        fitnessError = 50;
+        
+        prepareOptimizer([PSOSearchSpace searchSpaceWithDimensionsMin:-5.12 max:5.12 count:30], optimum, ^double(double* x, int dimensions) { // 10*D + sum(x.^2 - 10*cos(2.*pi.*x));
             double sum = 10.*dimensions;
             for (int d=0; d<dimensions; d++) {
                 sum += (x[d]*x[d] - 10.*cos(2.*M_PI*x[d]));
@@ -67,11 +75,11 @@ describe(@"Test functions", ^{
             return sum;
         });
         [optimizer.operation start];
-        expect(fitnessBest).to.beCloseToWithin(optimum, err);
+
+        expect(fitnessBest).to.beCloseToWithin(optimum, fitnessError);
         expect(iterations).to.beLessThan(expectedIterations);
     });
     it(@"Step", ^{
-        expectedIterations = 2500;
         prepareOptimizer([PSOSearchSpace searchSpaceWithDimensionsMin:-100 max:100 count:10], optimum, ^double(double* x, int dimensions) { // sum(floor(x + 0.5).^2);
             double sum = 0.;
             for (int d=0; d<dimensions; d++) {
@@ -81,12 +89,16 @@ describe(@"Test functions", ^{
             return sum;
         });
         [optimizer.operation start];
-        expect(fitnessBest).to.beCloseToWithin(optimum, err);
+        
+        expectedIterations = 70;
+        expect(fitnessBest).to.beCloseToWithin(optimum, fitnessError);
         expect(iterations).to.beLessThan(expectedIterations);
     });
     it(@"Rosenbrock", ^{
-        err = 0.05;
-        prepareOptimizer([PSOSearchSpace searchSpaceWithDimensionsMin:-30 max:30 count:10], optimum, ^double(double* x, int dimensions) {
+        
+        fitnessError = 100;
+        
+        prepareOptimizer([PSOSearchSpace searchSpaceWithDimensionsMin:-30 max:30 count:30], optimum, ^double(double* x, int dimensions) {
             double sum = 0.;
             for (int d=0; d<dimensions-1; d++) {
                 sum += 100.*(pow(x[d+1]-x[d]*x[d], 2.) + pow(1-x[d], 2.));
@@ -94,7 +106,7 @@ describe(@"Test functions", ^{
             return sum;
         });
         [optimizer.operation start];
-        expect(fitnessBest).to.beCloseToWithin(optimum, err);
+        expect(fitnessBest).to.beCloseToWithin(optimum, fitnessError);
         expect(iterations).to.beLessThan(expectedIterations);
     });
 });
