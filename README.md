@@ -1,4 +1,3 @@
-[![CI Status](http://img.shields.io/travis/IvanRublev/PSOLib.svg?style=flat)](https://travis-ci.org/IvanRublev/VRFoundationToolkit)
 [![Version](https://img.shields.io/cocoapods/v/PSOLib.svg?style=flat)](http://cocoapods.org/pods/PSOLib)
 [![License](https://img.shields.io/cocoapods/l/PSOLib.svg?style=flat)](http://cocoapods.org/pods/PSOLib)
 [![Platform](https://img.shields.io/cocoapods/p/PSOLib.svg?style=flat)](http://cocoapods.org/pods/PSOLib)
@@ -58,7 +57,7 @@ Usage
 
 You define the problem (e.g. search space, fitness function, optimum value) via the `PSOStandardOptimizer2011` class instance. Then obtain `NSOperation` object from the optimizer instance. Start the obtained operation. When it finishes the `finish` block is fired where you can obtain the solution.
 
-####Objective-C
+### Objective-C
 
 Here is an example of finding position where sphere function is minimal (that's x(i)=0):
 
@@ -150,7 +149,7 @@ forPositionsBunch:(double **)positions
 2. Defining problem and set the fitness function calculator object.
 3. Evaluate fitness function for all positions passed in.
 
-####Swift
+### Swift
 
 If you install the library as a framework it's automatically available to Swift apps. The first example shown above could be rewritten in Swift as following:
 
@@ -181,7 +180,7 @@ let optimizer = PSOStandardOptimizer2011 .optimizerForSearchSpace(
 optimizer.operation.start()
 ```
 
-####Common notes
+### Common notes
 
 The optimizer object of `PSOStandardOptimizer2011` class works as operations instance factory. Each time you get the operation property of the optimizer object the optimizer object is copied internally and a new instance of the operation which will use that copy of the optimizer is returned. That's why you must set all necessary input properties values before getting the operation. You can use tag property to identify optimizer objects passed in completion blocks.
 
